@@ -10,7 +10,6 @@ export const createCommentService = async (content, userId, onModel, commentable
                 status: 404
             }
         }
-
         const newComment = await createComment(content, userId, onModel, commentableId);
 
         await addChildCommentToParent(onModel, newComment, parent);
@@ -23,11 +22,13 @@ export const createCommentService = async (content, userId, onModel, commentable
 
 }
 
+
+
 export const findCommentByIdService = async (id) => {
     try {
         const comment = await findCommentById(id);
         if(!comment) {
-            throw {
+            return {
                 message: "Comment not found",
                 status: 404
             }

@@ -1,4 +1,5 @@
-import { countAllPosts, createPost, deletePostById, findAllPosts, findPostById, updatePostById } from "../repositories/postRepository.js";
+import { countAllPosts, createPost, deletePostById, findAllPosts, findPostById,  updatePostById } from "../repositories/postRepository.js";
+import Comment from "../schema/comment.js";
 
 export const createPostService = async (createPostObejct) => {
     const caption = createPostObejct.caption?.trim();
@@ -24,6 +25,16 @@ export const getAllPostsService = async (offset, limit) => {
 
 }
 
+// new service 
+export async function getCommentsByIds(commentIds) {
+    try {
+        const comments = await Comment.find({ _id: { $in: commentIds } });
+        return comments;
+    } catch (error) {
+        throw new Error('Error fetching comments by IDs');
+    }
+}
+
 export const deletePostService = async (id, user) => {
     // call the repository function
     const post = await findPostById(id);
@@ -36,6 +47,9 @@ export const deletePostService = async (id, user) => {
     const response = await deletePostById(id);
     return response;
 }
+
+
+
 
 export const updatePostService = async (id, updateObject) => {
     // call the repository function

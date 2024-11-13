@@ -20,6 +20,8 @@ export const findAllPosts = async (offset, limit) => {
     }
 }
 
+
+
 export const countAllPosts = async () => {
     try {
         const count = await Post.countDocuments();
@@ -54,4 +56,17 @@ export const updatePostById = async (id, updateObject) => {
     } catch(error) {
         console.log(error);
     }
+}
+
+export const findPostByUserId = async (userId)=>{
+    try {
+        const posts = await Post.find({ 'user': userId })
+          .sort({ createdAt: -1 }) 
+          .populate('user', 'username email'); 
+    
+        return posts; 
+      } catch (error) {
+        console.error('Error fetching posts by user:', error);
+        throw new Error('Could not fetch posts for the user');
+      }
 }
